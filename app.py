@@ -5,7 +5,6 @@ Created on Thu Apr 22 18:49:50 2021
 
 @author: tungakin
 """
-
 import BTS
 import cv2
 from matplotlib import pyplot as plt
@@ -27,9 +26,9 @@ def passImage():
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # OpenCV loads images as BGR by default
     prediction = model.predict(img, is_channels_first=False, normalize=True) # Dont forget to normalize images
-    answer = float(prediction[int(prediction.shape[0]/2), int(prediction.shape[1]/2)])    
+    answer = float(prediction[int(prediction.shape[0]/2), int(prediction.shape[1]/2)])
+    #Ive tried to get the depth of middle pixel of the image. Index could be changed.
     an_pick = jsonpickle.encode(answer)
-    # an_pick = jsonpickle.encode(int(img[100,150][0]))
     return Response(response=an_pick, status=200)
 
 
