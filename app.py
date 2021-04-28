@@ -26,8 +26,9 @@ def passImage():
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # OpenCV loads images as BGR by default
     prediction = model.predict(img, is_channels_first=False, normalize=True) # Dont forget to normalize images
+    #You can change the 'focal' argument according to your camera if you will test on your own images.
     answer = float(prediction[int(prediction.shape[0]/2), int(prediction.shape[1]/2)])
-    #Ive tried to get the depth of middle pixel of the image. Index could be changed.
+    #Ive tried to get the depth of middle pixel of the image. Indexing could be changed.
     an_pick = jsonpickle.encode(answer)
     return Response(response=an_pick, status=200)
 
