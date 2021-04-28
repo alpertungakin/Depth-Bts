@@ -1,5 +1,6 @@
 # BTS - PyTorch
 This repository contains the unofficial PyTorch implementation of From Big to Small: Multi-Scale Local Planar Guidance for Monocular Depth Estimation
+It was created by modifying (Eren Balatkan's repository)[https://github.com/ErenBalatkan/Bts-PyTorch] with API aproach. Run the service with app.py. Then pass your image via client.py to the service and observe the results. Required libraries are given in requirements.txt.
 
 [Paper](https://arxiv.org/abs/1907.10326)  
 [Official Tensorflow Implementation](https://github.com/cogaplex-bts/bts)
