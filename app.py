@@ -30,6 +30,7 @@ def passImage():
     prediction = model.predict(img, is_channels_first=False, focal = float(focal), normalize=True) # Dont forget to normalize images
     #We can perform a prediction using the focal length of our camera. 
     answer = float(prediction[int(prediction.shape[0]/2), int(prediction.shape[1]/2)])
+    #Ive tried to get the depth of the middle pixels. Indexing could be changed.
     an_pick = jsonpickle.encode(answer)
     return Response(response=an_pick, status=200)
 
