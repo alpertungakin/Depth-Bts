@@ -36,7 +36,7 @@ future==0.18.2
 google-auth==1.29.0
 google-auth-oauthlib==0.4.4
 grpcio==1.37.0
-idna=2.10
+idna==2.10
 imageio==2.9.0
 imagesize==1.2.0
 imgaug==0.4.0
