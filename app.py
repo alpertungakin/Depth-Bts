@@ -5,6 +5,7 @@ Created on Thu Apr 22 18:49:50 2021
 
 @author: tungakin
 """
+import base64
 import BTS
 import cv2
 from matplotlib import pyplot as plt
@@ -20,15 +21,15 @@ model.eval()
 
 @app.route("/pass_image", methods=["POST"])
 def passImage():
-    r = request
-    img = r.data
-    nparr = np.frombuffer(r.data, np.uint8)
+    focal = request.form.get('focal')
+    img = base64.b64decode(request.form.get('image'))
+    #Parse the posted request into "focal length" and "image".
+    nparr = np.frombuffer(img, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # OpenCV loads images as BGR by default
-    prediction = model.predict(img, is_channels_first=False, normalize=True) # Dont forget to normalize images
-    #You can change the 'focal' argument according to your camera if you will test on your own images.
+    prediction = model.predict(img, is_channels_first=False, focal = float(focal), normalize=True) # Dont forget to normalize images
+    #We can perform a prediction using the focal length of our camera. 
     answer = float(prediction[int(prediction.shape[0]/2), int(prediction.shape[1]/2)])
-    #Ive tried to get the depth of middle pixel of the image. Indexing could be changed.
     an_pick = jsonpickle.encode(answer)
     return Response(response=an_pick, status=200)
 
