@@ -65,9 +65,9 @@ MarkupSafe==1.1.1
 matplotlib==3.4.1
 mccabe==0.6.1
 mistune==0.8.4
-git+git://github.com/IntelPython/mkl_fft@1.3.0#egg=mkl-fft
-git+git://github.com/IntelPython/mkl_random@1.1.1#egg=mkl-random
-git+git://github.com/IntelPython/mkl_services@2.3.0#egg=mkl-services
+mkl-fft
+mkl-random
+mkl-services
 mypy-extensions==0.4.3
 nbclient==0.5.3
 nbconvert==6.0.7
