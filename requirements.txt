@@ -36,7 +36,7 @@ future==0.18.2
 google-auth==1.29.0
 google-auth-oauthlib==0.4.4
 grpcio==1.37.0
-idna==2.10
+idna=2.10
 imageio==2.9.0
 imagesize==1.2.0
 imgaug==0.4.0
@@ -65,9 +65,9 @@ MarkupSafe==1.1.1
 matplotlib==3.4.1
 mccabe==0.6.1
 mistune==0.8.4
-mkl-fft
-mkl-random
-mkl-service
+git+git://github.com/IntelPython/mkl_fft@releases/tag/v1.3.0#egg=mkl-fft
+git+git://github.com/IntelPython/mkl_random@releases/tag/v1.1.1#egg=mkl-random
+git+git://github.com/IntelPython/mkl_services@releases/tag/v2.3.0#egg=mkl-services
 mypy-extensions==0.4.3
 nbclient==0.5.3
 nbconvert==6.0.7
