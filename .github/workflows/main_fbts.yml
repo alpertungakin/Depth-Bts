@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'fbts'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_9d5c109b8d4547eb84abc907f82e7355 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_dff55cbe156946cc9dc213ec95696a83 }}
