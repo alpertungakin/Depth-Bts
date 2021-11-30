@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 22 18:49:50 2021
-
 @author: tungakin
 """
 import base64
@@ -15,25 +13,47 @@ import jsonpickle
 from flask import Flask, render_template, request, redirect, send_file, url_for, Response
 
 app = Flask(__name__)
-model = BTS.BtsController()
-model.load_model("models/bts_latest")
-model.eval()
+objectDetectionmodel = torch.hub.load("ultralytics/yolov5", "yolov5s")
+depthModel = BTS.BtsController()
+depthModel.load_model("models/bts_latest")
+depthModel.eval()
 
-@app.route("/pass_image", methods=["POST"])
-def passImage():
+@app.route("/pass4depth", methods = ["POST"])
+def depthExtract():
     focal = request.form.get('focal')
     img = base64.b64decode(request.form.get('image'))
-    #Parse the posted request into "focal length" and "image".
     nparr = np.frombuffer(img, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # OpenCV loads images as BGR by default
-    prediction = model.predict(img, is_channels_first=False, focal = float(focal), normalize=True) # Dont forget to normalize images
-    #We can perform a prediction using the focal length of our camera. 
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    prediction = depthModel.predict(img, is_channels_first=False, focal = float(focal), normalize=True) 
     answer = float(prediction[int(prediction.shape[0]/2), int(prediction.shape[1]/2)])
     #Ive tried to get the depth of the middle pixels. Indexing could be changed.
     an_pick = jsonpickle.encode(answer)
     return Response(response=an_pick, status=200)
 
+@app.route("/pass4detection", methods = ["POST"])
+def objectDetection():
+    img = base64.b64decode(request.form.get('image'))
+    nparr = np.frombuffer(img, np.uint8)
+    img2 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+    results = objectDetectionmodel(img2)
+    results.print()
+    result = results.pred[0].cpu().numpy()
+    quePoi = np.array([int(img2.shape[0]/2), int(img2.shape[1]/2)])
+    response = []
+    
+    for r in result:
+        if (r[1]<=quePoi[0] and r[3]>=quePoi[0] and r[0]<=quePoi[1] and r[2]>=quePoi[1]):
+            response.append(results.names[int(r[5])])
+        else:
+            continue
+    
+    if len(response)>1:
+        response = response[0]
+    
+    an_pick = jsonpickle.encode(response)
+    return Response(response=an_pick, status=200)
 
 if __name__ == '__main__':
     app.run()
